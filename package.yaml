@@ -29,6 +29,7 @@ dependencies:
 - terminal-size
 - lens
 - yaml
+- pretty-simple
 
 default-extensions:
 - OverloadedStrings

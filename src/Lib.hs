@@ -1,5 +1,6 @@
 module Lib
     ( mainTask
+    , bookFromFile
     )
 where
 
@@ -11,6 +12,8 @@ import           Data.ByteString               as BS
 import           Data.Text.Lazy.Encoding       as TLE
 import           Prelude                       as P
 import           Data.Yaml.Builder
+import           System.IO                     as S
+import           Text.Pretty.Simple             ( pPrint )
 
 data Book = Book
     { chapters     :: [Chapter]
@@ -37,3 +40,10 @@ decodeBook = decodeEither'
 putStrLnT :: T.Text -> IO ()
 putStrLnT = P.putStrLn . T.unpack
 
+
+
+bookFromFile = do
+    handle   <- openFile "book.yaml" ReadMode
+    contents <- BS.hGetContents handle
+    pPrint (decodeBook contents)
+    hClose handle
