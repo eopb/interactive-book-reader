@@ -44,10 +44,10 @@ instance FromJSON Chapter where
 
 data Choice = Choice
     { choiceContent :: Maybe T.Text
-    , goesTo        :: Maybe Int
+    , goesTo        :: Int
     } deriving (Show, Generic)
 instance FromJSON Choice where
-    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .:? "goes-to"
+    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .: "goes-to"
     parseJSON e          = error $ show e
 
 
