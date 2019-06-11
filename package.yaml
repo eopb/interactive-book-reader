@@ -1,0 +1,61 @@
+name:                interactive-book-reader
+version:             0.0.0.1
+github:              "ethanboxx/interactive-book-reader"
+license:             BSD3
+author:              "Ethan Brierley"
+maintainer:          "incoming+efunb-interactive-book-reader-12798881-issue-@incoming.gitlab.com"
+copyright:           "2019 Ethan Brierley"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/ethanboxx/interactive-book-reader#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- text
+- bytestring
+- http-conduit
+- aeson
+- process
+- terminal-size
+- lens
+
+default-extensions:
+- OverloadedStrings
+- ViewPatterns
+- DeriveGeneric
+- TemplateHaskell
+
+library:
+  source-dirs: src
+
+executables:
+  interactive-book-reader:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - interactive-book-reader
+
+tests:
+  interactive-book-reader-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - interactive-book-reader
