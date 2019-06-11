@@ -1,10 +1,11 @@
 module Parse
     ( mainTask
-    , bookFromFile
     , chapters
+    , bookFromFile
     , Book
     , Chapter
     , YChoice
+    , ParseException
     , key
     , content
     , end
@@ -81,4 +82,3 @@ bookFromFile = do
     handle   <- openFile "book.yaml" ReadMode
     contents <- BS.hGetContents handle
     pure $ decodeBook contents
-

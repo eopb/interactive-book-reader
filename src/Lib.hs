@@ -1,6 +1,6 @@
 module Lib
     ( Y.mainTask
-    , Y.bookFromFile
+    , bookFromFile
     , structureBook
     )
 where
@@ -56,3 +56,10 @@ structureChoices = BChoices . map structureChoice
 structureChoice :: Y.YChoice -> BChoice
 structureChoice y =
     BChoice { choiceContent = y ^. Y.choiceContent, goesTo = y ^. Y.goesTo }
+
+bookFromFile :: IO (Either Y.ParseException Book)
+bookFromFile = (fmap . fmap) structureBook Y.bookFromFile
+
+
+
+
