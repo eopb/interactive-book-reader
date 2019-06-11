@@ -29,10 +29,10 @@ instance FromJSON Chapter where
 
 
 mainTask :: IO ()
-mainTask = print decodeBook
+mainTask = print (decodeBook yaml)
 
-decodeBook :: Either ParseException Book
-decodeBook = decodeEither' yaml
+decodeBook :: BS.ByteString -> Either ParseException Book
+decodeBook = decodeEither'
 
 putStrLnT :: T.Text -> IO ()
 putStrLnT = P.putStrLn . T.unpack
