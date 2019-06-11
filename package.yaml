@@ -30,6 +30,7 @@ dependencies:
 - lens
 - yaml
 - pretty-simple
+- containers
 
 default-extensions:
 - OverloadedStrings

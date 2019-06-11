@@ -10,13 +10,13 @@ import qualified Parse                         as Y
 import qualified Data.Text.Lazy                as T
 import           Control.Lens
 import           Data.Maybe
+import qualified Data.Map.Strict               as M
 
-data Book = Book { chapters :: [Chapter] } deriving (Show)
+data Book = Book { chapters :: M.Map Int Chapter } deriving (Show)
 
 
 data Chapter = Chapter
-    { key         :: Int
-    , content     :: Maybe T.Text
+    {   content     :: Maybe T.Text
     , chapterType :: ChapterType
     } deriving (Show)
 
@@ -30,14 +30,14 @@ data BChoice = BChoice
 structureBook :: Y.Book -> Book
 structureBook y = Book { chapters = structureChapters (y ^. Y.chapters) }
 
-structureChapters :: [Y.Chapter] -> [Chapter]
-structureChapters = fmap structureChapter
+structureChapters :: [Y.Chapter] -> M.Map Int Chapter
+structureChapters = M.fromList . fmap structureChapter
 
-structureChapter :: Y.Chapter -> Chapter
-structureChapter y = Chapter { key         = y ^. Y.key
-                             , content     = y ^. Y.content
-                             , chapterType = getChapterType y
-                             }
+structureChapter :: Y.Chapter -> (Int, Chapter)
+structureChapter y =
+    ( y ^. Y.key
+    , Chapter { content = y ^. Y.content, chapterType = getChapterType y }
+    )
 
 getChapterType :: Y.Chapter -> ChapterType
 getChapterType y = firstJust
