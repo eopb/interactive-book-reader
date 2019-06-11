@@ -4,20 +4,22 @@ module Yaml
 where
 
 
-import           Data.Text                     as T
+import           Data.Text.Lazy                as T
+import           Data.ByteString               as BS
 
 
-yaml :: T.Text
+yaml :: BS.ByteString
 yaml = multiLineText
-    [ "book:"
+    [ "chapters:"
     , "  -"
-    , "    chapter: 1"
+    , "    key: 1"
     , "    content: >"
     , "      Welcome to the test book for this program"
     , "      You have 3 options."
     ]
 
-multiLineText :: [T.Text] -> T.Text
-multiLineText t = T.concat (fmap (\x -> append x "\n") t)
+
+multiLineText :: [BS.ByteString] -> BS.ByteString
+multiLineText t = BS.concat (fmap (\x -> BS.append x "\n") t)
 
 

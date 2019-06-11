@@ -28,6 +28,7 @@ dependencies:
 - process
 - terminal-size
 - lens
+- yaml
 
 default-extensions:
 - OverloadedStrings
