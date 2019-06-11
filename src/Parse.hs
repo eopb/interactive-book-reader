@@ -9,9 +9,7 @@ import           Yaml
 import           Data.Yaml                     as Y
 import           GHC.Generics
 import           Data.ByteString               as BS
-import           Data.Text.Lazy.Encoding       as TLE
 import           Prelude                       as P
-import           Data.Yaml.Builder
 import           System.IO                     as S
 
 
@@ -63,7 +61,7 @@ putStrLnT :: T.Text -> IO ()
 putStrLnT = P.putStrLn . T.unpack
 
 
-
+bookFromFile :: IO (Either ParseException Book)
 bookFromFile = do
     handle   <- openFile "book.yaml" ReadMode
     contents <- BS.hGetContents handle
