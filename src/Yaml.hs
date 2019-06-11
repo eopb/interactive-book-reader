@@ -20,6 +20,6 @@ yaml = multiLineText
 
 
 multiLineText :: [BS.ByteString] -> BS.ByteString
-multiLineText t = BS.concat (fmap (\x -> BS.append x "\n") t)
+multiLineText t = BS.concat (fmap (`BS.append` "\n") t)
 
 
