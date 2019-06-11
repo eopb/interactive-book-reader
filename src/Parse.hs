@@ -4,6 +4,14 @@ module Parse
     , chapters
     , Book
     , Chapter
+    , YChoice
+    , key
+    , content
+    , end
+    , redirectTo
+    , choices
+    , choiceContent
+    , goesTo
     )
 where
 
@@ -19,12 +27,13 @@ import           Control.Lens
 
 
 data YChoice = Choice
-     { _choiceContent :: Maybe T.Text
+     { _choiceContent :: T.Text
      , _goesTo        :: Int
      } deriving (Show, Generic)
 instance FromJSON YChoice where
-    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .: "goes-to"
+    parseJSON (Object v) = Choice <$> v .: "content" <*> v .: "goes-to"
     parseJSON e          = error $ show e
+makeLenses ''YChoice
 
 data Chapter = Chapter
      { _key        :: Int
@@ -47,6 +56,7 @@ instance FromJSON Chapter where
             <*> v
             .:? "end"
     parseJSON e = error $ show e
+makeLenses ''Chapter
 
 data Book = Book
      { _chapters     :: [Chapter]
