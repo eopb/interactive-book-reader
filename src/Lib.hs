@@ -16,7 +16,7 @@ data Book = Book { chapters :: M.Map Int Chapter } deriving (Show)
 
 
 data Chapter = Chapter
-    {   content     :: Maybe T.Text
+    { content     :: Maybe T.Text
     , chapterType :: ChapterType
     } deriving (Show)
 
@@ -47,6 +47,7 @@ getChapterType y = firstJust
     , Redirect <$> (y ^. Y.redirectTo)
     , structureChoices <$> (y ^. Y.choices)
     ]
+firstJust :: [Maybe c] -> c
 firstJust = head . catMaybes
 
 structureChoices :: [Y.YChoice] -> ChapterType
