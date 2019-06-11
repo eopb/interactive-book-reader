@@ -1,12 +1,13 @@
 module Lib
-    ( mainTask
-    , bookFromFile
+    ( Y.mainTask
+    , Y.bookFromFile
     )
 where
 
-import           Parse
+import qualified Parse                         as Y
 
 import           Data.Text.Lazy                as T
+import           Control.Lens
 
 data Book = Book { chapters :: [Chapter] } deriving (Show)
 
@@ -24,6 +25,8 @@ data BChoice = BChoice
     , goesTo        :: Int
     } deriving (Show)
 
-structureBook :: YBook -> Book
-structureBook y = Book { chapters = error "" }
+structureBook :: Y.Book -> Book
+structureBook y = Book { chapters = structureChapters (y ^. Y.chapters) }
 
+structureChapters :: [Y.Chapter] -> [Chapter]
+structureChapters = error ""

@@ -1,7 +1,9 @@
 module Parse
     ( mainTask
     , bookFromFile
-    , YBook
+    , chapters
+    , Book
+    , Chapter
     )
 where
 
@@ -24,14 +26,14 @@ instance FromJSON YChoice where
     parseJSON (Object v) = Choice <$> v .:? "content" <*> v .: "goes-to"
     parseJSON e          = error $ show e
 
-data YChapter = Chapter
+data Chapter = Chapter
      { _key        :: Int
      , _content    :: Maybe T.Text
      , _choices    :: Maybe [YChoice]
      , _redirectTo :: Maybe Int
      , _end        :: Maybe Bool
      } deriving (Show, Generic)
-instance FromJSON YChapter where
+instance FromJSON Chapter where
     parseJSON (Object v) =
         Chapter
             <$> v
@@ -46,25 +48,25 @@ instance FromJSON YChapter where
             .:? "end"
     parseJSON e = error $ show e
 
-data YBook = Book
-     { _chapters     :: [YChapter]
+data Book = Book
+     { _chapters     :: [Chapter]
      } deriving (Show, Generic)
-instance FromJSON YBook where
+instance FromJSON Book where
     parseJSON (Object v) = Book <$> v .: "chapters"
     parseJSON e          = error $ show e
-makeLenses ''YBook
+makeLenses ''Book
 
 mainTask :: IO ()
 mainTask = print (decodeBook yaml)
 
-decodeBook :: BS.ByteString -> Either ParseException YBook
+decodeBook :: BS.ByteString -> Either ParseException Book
 decodeBook = decodeEither'
 
 putStrLnT :: T.Text -> IO ()
 putStrLnT = P.putStrLn . T.unpack
 
 
-bookFromFile :: IO (Either ParseException YBook)
+bookFromFile :: IO (Either ParseException Book)
 bookFromFile = do
     handle   <- openFile "book.yaml" ReadMode
     contents <- BS.hGetContents handle
