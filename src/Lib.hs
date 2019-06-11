@@ -12,7 +12,7 @@ import           Control.Lens
 import           Data.Maybe
 import qualified Data.Map.Strict               as M
 
-data Book = Book { chapters :: M.Map Int Chapter } deriving (Show)
+newtype Book = Book { chapters :: M.Map Int Chapter } deriving (Show)
 
 
 data Chapter = Chapter

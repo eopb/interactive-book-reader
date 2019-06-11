@@ -58,7 +58,7 @@ instance FromJSON Chapter where
     parseJSON e = error $ show e
 makeLenses ''Chapter
 
-data Book = Book
+newtype Book = Book
      { _chapters     :: [Chapter]
      } deriving (Show, Generic)
 instance FromJSON Book where
