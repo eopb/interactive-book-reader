@@ -1,6 +1,7 @@
 module Parse
     ( mainTask
     , bookFromFile
+    , YBook
     )
 where
 
@@ -11,23 +12,26 @@ import           GHC.Generics
 import           Data.ByteString               as BS
 import           Prelude                       as P
 import           System.IO                     as S
+import           Control.Lens
 
 
-data Book = Book
-    { chapters     :: [Chapter]
-    } deriving (Show, Generic)
-instance FromJSON Book where
-    parseJSON (Object v) = Book <$> v .: "chapters"
+
+data YChoice = Choice
+     { _choiceContent :: Maybe T.Text
+     , _goesTo        :: Int
+     } deriving (Show, Generic)
+instance FromJSON YChoice where
+    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .: "goes-to"
     parseJSON e          = error $ show e
 
-data Chapter = Chapter
-    { key        :: Int
-    , content    :: Maybe T.Text
-    , choices    :: Maybe [Choice]
-    , redirectTo :: Maybe Int
-    , end        :: Maybe Bool
-    } deriving (Show, Generic)
-instance FromJSON Chapter where
+data YChapter = Chapter
+     { _key        :: Int
+     , _content    :: Maybe T.Text
+     , _choices    :: Maybe [YChoice]
+     , _redirectTo :: Maybe Int
+     , _end        :: Maybe Bool
+     } deriving (Show, Generic)
+instance FromJSON YChapter where
     parseJSON (Object v) =
         Chapter
             <$> v
@@ -42,26 +46,25 @@ instance FromJSON Chapter where
             .:? "end"
     parseJSON e = error $ show e
 
-data Choice = Choice
-    { choiceContent :: Maybe T.Text
-    , goesTo        :: Int
-    } deriving (Show, Generic)
-instance FromJSON Choice where
-    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .: "goes-to"
+data YBook = Book
+     { _chapters     :: [YChapter]
+     } deriving (Show, Generic)
+instance FromJSON YBook where
+    parseJSON (Object v) = Book <$> v .: "chapters"
     parseJSON e          = error $ show e
-
+makeLenses ''YBook
 
 mainTask :: IO ()
 mainTask = print (decodeBook yaml)
 
-decodeBook :: BS.ByteString -> Either ParseException Book
+decodeBook :: BS.ByteString -> Either ParseException YBook
 decodeBook = decodeEither'
 
 putStrLnT :: T.Text -> IO ()
 putStrLnT = P.putStrLn . T.unpack
 
 
-bookFromFile :: IO (Either ParseException Book)
+bookFromFile :: IO (Either ParseException YBook)
 bookFromFile = do
     handle   <- openFile "book.yaml" ReadMode
     contents <- BS.hGetContents handle

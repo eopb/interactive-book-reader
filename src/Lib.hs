@@ -17,10 +17,13 @@ data Chapter = Chapter
     , chapterType :: ChapterType
     } deriving (Show)
 
-data ChapterType = Choices [Choice] | Redirect Int | End deriving (Show)
+data ChapterType = BChoices [BChoice] | Redirect Int | End deriving (Show)
 
-data Choice = Choice
+data BChoice = BChoice
     { choiceContent :: T.Text
     , goesTo        :: Int
     } deriving (Show)
+
+structureBook :: YBook -> Book
+structureBook y = Book { chapters = error "" }
 
