@@ -4,3 +4,19 @@ chapters:
     content: >
       Welcome to the test book for this program
       You have 3 options.
+    choices:
+      -
+        content: "Do you choose to continue?"
+        goes-to: 2
+      -
+        content: "Do you wish to end"
+        goes-to: 3
+  -
+    key: 2
+    content: >
+      Welcome to the test book for this program
+      You have no options.
+    redirect-to: 1
+  -
+    key: 3
+    end: true

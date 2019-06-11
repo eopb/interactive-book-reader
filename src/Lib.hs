@@ -23,11 +23,33 @@ instance FromJSON Book where
     parseJSON e          = error $ show e
 
 data Chapter = Chapter
-    { key     :: Int
-    , content :: T.Text
+    { key        :: Int
+    , content    :: Maybe T.Text
+    , choices    :: Maybe [Choice]
+    , redirectTo :: Maybe Int
+    , end        :: Maybe Bool
     } deriving (Show, Generic)
 instance FromJSON Chapter where
-    parseJSON (Object v) = Chapter <$> v .: "key" <*> v .: "content"
+    parseJSON (Object v) =
+        Chapter
+            <$> v
+            .:  "key"
+            <*> v
+            .:? "content"
+            <*> v
+            .:? "choices"
+            <*> v
+            .:? "redirect-to"
+            <*> v
+            .:? "end"
+    parseJSON e = error $ show e
+
+data Choice = Choice
+    { choiceContent :: Maybe T.Text
+    , goesTo        :: Maybe Int
+    } deriving (Show, Generic)
+instance FromJSON Choice where
+    parseJSON (Object v) = Choice <$> v .:? "content" <*> v .:? "goes-to"
     parseJSON e          = error $ show e
 
 
