@@ -3,8 +3,6 @@ module Yaml
     )
 where
 
-
-import           Data.Text.Lazy                as T
 import           Data.ByteString               as BS
 
 
