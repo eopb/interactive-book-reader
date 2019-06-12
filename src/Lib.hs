@@ -1,17 +1,18 @@
 module Lib
     ( bookFromFile
+    , run
     )
 where
 
 import           Structure
+
+import qualified Data.Text.Lazy                as T
 import           Control.Lens
 import           Data.Map.Strict
 
-run :: IO ()
-run = do
-    book <- bookFromFile
-    case book of
-        Right book -> run' book (firstChapter book)
+run :: Book -> IO ()
+run book = do
+    run' book (firstChapter book)
     return ()
 
 firstChapter :: Book -> Chapter
@@ -26,7 +27,17 @@ run' b c = do
     case (c ^. chapterType) of
         End        -> return ()
         Redirect n -> run' b ((b ^. chapters) ! n)
-        BChoices c -> print $ mconcat ["You have ", " choices."]
+        BChoices c -> displayChoices c
 
 
-
+displayChoices :: [BChoice] -> IO ()
+displayChoices c = do
+    print $ mconcat ["You have ", show (length c), " choices."]
+    head
+        (fmap
+            (\(c, index) ->
+                print
+                    (mconcat [show index, ") ", T.unpack (c ^. choiceContent)])
+            )
+            (zip c [0 ..])
+        )

@@ -4,5 +4,9 @@ import           Lib
 import           Text.Pretty.Simple             ( pPrint )
 
 main :: IO ()
-main = bookFromFile >>= pPrint
+main = do
+    book <- bookFromFile
+    pPrint book
+    case book of
+        Right b -> run b
 

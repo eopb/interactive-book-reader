@@ -4,6 +4,7 @@ module Structure
     , Chapter
     , BChoice
     , ChapterType(End, Redirect, BChoices)
+    , choiceContent
     , chapters
     , content
     , chapterType
@@ -22,6 +23,7 @@ data BChoice = BChoice
     { _choiceContent :: T.Text
     , _goesTo        :: Int
     } deriving (Show)
+makeLenses ''BChoice
 
 data ChapterType = BChoices [BChoice] | Redirect Int | End deriving (Show)
 
