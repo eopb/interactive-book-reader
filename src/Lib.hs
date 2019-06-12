@@ -21,10 +21,10 @@ firstChapter b = (b ^. chapters) ! 1
 
 run' :: Book -> Chapter -> IO ()
 run' b c = do
-    case (c ^. content) of
+    case c ^. content of
         Just content -> print content
         Nothing      -> return ()
-    case (c ^. chapterType) of
+    case c ^. chapterType of
         End        -> return ()
         Redirect n -> run' b ((b ^. chapters) ! n)
         BChoices c -> displayChoices c
