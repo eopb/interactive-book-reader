@@ -2,7 +2,11 @@ module Structure
     ( bookFromFile
     , Book
     , Chapter
+    , BChoice
+    , ChapterType(End, Redirect, BChoices)
     , chapters
+    , content
+    , chapterType
     )
 where
 
@@ -25,7 +29,7 @@ data Chapter = Chapter
     { _content     :: Maybe T.Text
     , _chapterType :: ChapterType
     } deriving (Show)
-
+makeLenses ''Chapter
 
 newtype Book = Book { _chapters :: M.Map Int Chapter } deriving (Show)
 makeLenses ''Book
