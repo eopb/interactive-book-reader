@@ -9,6 +9,7 @@ import           Structure
 import qualified Data.Text.Lazy                as T
 import           Control.Lens
 import           Data.Map.Strict
+import           Data.Foldable
 
 run :: Book -> IO ()
 run book = do
@@ -21,9 +22,7 @@ firstChapter b = (b ^. chapters) ! 1
 
 run' :: Book -> Chapter -> IO ()
 run' b c = do
-    case c ^. content of
-        Just content -> print content
-        Nothing      -> return ()
+    forM_ (c ^. content) print
     case c ^. chapterType of
         End        -> return ()
         Redirect n -> run' b ((b ^. chapters) ! n)
