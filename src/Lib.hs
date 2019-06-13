@@ -31,14 +31,14 @@ run' b c = do
 
 displayChoices :: [BChoice] -> IO ()
 displayChoices c = do
-    putStrLn $ mconcat ["You have ", show (length (c)), " choices."]
+    putStrLn $ mconcat ["You have ", show (length c), " choices."]
     putStrLn $ listChoices c 0
 
 listChoices :: [BChoice] -> Int -> String
 listChoices c i = mconcat
     [ show (i + 1)
     , ") "
-    , T.unpack ((head c) ^. choiceContent)
+    , T.unpack (head c ^. choiceContent)
     , "\n"
     , if length c == 1 then "" else listChoices (tail c) (i + 1)
     ]
