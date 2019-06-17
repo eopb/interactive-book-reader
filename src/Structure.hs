@@ -40,7 +40,7 @@ makeLenses ''Book
 
 
 structureBook :: Y.Book -> Book
-structureBook y = Book { _chapters = structureChapters (y ^. Y.chapters) }
+structureBook y = Book { _chapters = structureChapters $ y ^. Y.chapters }
 
 structureChapters :: [Y.Chapter] -> M.Map Int Chapter
 structureChapters = M.fromList . fmap structureChapter
@@ -56,8 +56,8 @@ getChapterType y = firstJust
     [ do
         end <- y ^. Y.end
         if end then pure End else Nothing
-    , Redirect <$> (y ^. Y.redirectTo)
-    , structureChoices <$> (y ^. Y.choices)
+    , Redirect <$> y ^. Y.redirectTo
+    , structureChoices <$> y ^. Y.choices
     ]
 firstJust :: [Maybe c] -> c
 firstJust = head . catMaybes
